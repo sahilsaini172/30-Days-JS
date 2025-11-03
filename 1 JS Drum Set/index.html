@@ -5,67 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>Document</title>
+    <style>
+      .keys {
+        transition: all 0.2s;
+      }
+      .playing {
+        transform: scale(1.1);
+      }
+    </style>
   </head>
   <body class="h-screen">
     <div
-      class="keys flex w-full h-full items-center justify-center gap-2 *:p-8 *:border-2 *:border-neutral-500 *:rounded-xl *:text-sm *:w-[100px] *:h-[100px]"
+      class="flex w-full h-full items-center justify-center gap-2 *:p-8 *:border-2 *:border-neutral-500 *:rounded-xl *:text-sm *:w-[100px] *:h-[100px]"
     >
       <div
         data-key="65"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>A</span><span class="text-xs">CLAP</span>
       </div>
       <div
         data-key="83"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>S</span><span class="text-xs">HIHAT</span>
       </div>
       <div
         data-key="68"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>D</span><span class="text-xs">KICK</span>
       </div>
       <div
         data-key="70"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>F</span><span class="text-xs">OPENHAT</span>
       </div>
       <div
         data-key="71"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>G</span><span class="text-xs">BOOM</span>
       </div>
       <div
         data-key="72"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>H</span><span class="text-xs">RIDE</span>
       </div>
       <div
         data-key="74"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>J</span><span class="text-xs">SNARE</span>
       </div>
       <div
         data-key="75"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>K</span><span class="text-xs">TOM</span>
       </div>
       <div
         data-key="76"
-        class="flex flex-col items-center justify-center gap-2"
+        class="keys flex flex-col items-center justify-center gap-2"
       >
         <span>L</span><span class="text-xs">TINK</span>
       </div>
     </div>
-    <audio data-key="65" src="sounds/"></audio>
-    <script src="script.js"></script>
+    <audio data-key="65" src="sounds/clap-375693.mp3"></audio>
+    <audio
+      data-key="83"
+      src="sounds/tcp2-slide-hihat-completesoundaudio-419137.mp3"
+    ></audio>
+    <audio data-key="68" src="sounds/tr909-kick-drum-241402.mp3"></audio>
+    <audio data-key="70" src="sounds/openhat-164697.mp3"></audio>
+    <audio data-key="71" src="sounds/vine-boom-392646.mp3"></audio>
+    <audio data-key="72" src="sounds/long-ride-cymbal-2-36337.mp3"></audio>
+    <audio data-key="74" src="sounds/snare-112754.mp3"></audio>
+    <audio data-key="75" src="sounds/floor-tom-107404.mp3"></audio>
+    <audio data-key="76" src="sounds/toast-clink-glass-tink-384159.mp3"></audio>
+    <script>
+      function playSound(e) {
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const key = document.querySelector(`.keys[data-key="${e.keyCode}"]`);
+        if (!audio) return; //return none
+        audio.currentTime = 0; //rewind to zero
+        audio.play();
+        key.classList.add("playing");
+      }
+
+      function removeTransition(e) {
+        if (e.propertyName !== "transform") return;
+        this.classList.remove("playing");
+      }
+
+      const keys = document.querySelectorAll(".keys");
+
+      keys.forEach((key) =>
+        key.addEventListener("transitionend", removeTransition)
+      );
+      window.addEventListener("keydown", playSound);
+    </script>
   </body>
 </html>
